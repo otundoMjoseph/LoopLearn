@@ -1,194 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoopLearn | EduForAll</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoopLearn | EduForAll</title>
+
+  <!-- Tailwind, Chart.js, FontAwesome, Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="bg-[#1A0E2A] text-white">
 
-    <div id="loading-screen" class="fixed inset-0 bg-[#1A0E2A] flex flex-col items-center justify-center z-[110] transition-opacity duration-500">
-        <div class="flex items-center space-x-4">
-            <i class="fas fa-sync-alt text-4xl text-[#C45508] animate-spin"></i>
-            <h1 class="text-4xl font-bold text-white">Loading...</h1>
-        </div>
-        <p class="mt-4 text-gray-400">Please wait while we connect you.</p>
-    </div>
+  <!-- ================= CONTENT (same as your HTML body) ================= -->
+  <!-- Loading screen, Dashboard, Modals, Sidebar, Footer, etc. -->
 
-    <div id="app-container" class="hidden">
-        <div id="dashboard-view">
-            <header class="bg-transparent sticky top-0 z-50 transition-colors duration-500 ease-in-out">
-                <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                    <button id="logo-button" class="flex items-center space-x-3 focus:outline-none">
-                        <i class="fas fa-sync-alt text-3xl text-[#C45508] transition-colors duration-500"></i>
-                        <div class="flex flex-col text-left">
-                            <span class="text-2xl font-bold text-white transition-colors duration-500">LoopLearn</span>
-                            <span class="text-xs tracking-widest text-gray-500">LEARNING HUB</span>
-                        </div>
-                    </button>
-                    <div class="flex items-center space-x-8 ml-8 lg:ml-12">
-                        <a href="#dashboard" onclick="showSection('dashboard')" class="text-gray-300 hover:text-white transition-colors">Dashboard</a>
-                        <a href="#my-courses" onclick="showSection('my-courses')" class="text-gray-300 hover:text-white transition-colors">My Learning</a>
-                        <a href="#catalog" onclick="showSection('catalog')" class="text-gray-300 hover:text-white transition-colors">Course Catalog</a>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <button id="auth-btn" class="px-4 py-2 bg-[#1C1A27] text-gray-400 rounded-lg hover:bg-gray-900 transition-colors hidden">Log In / Sign Up</button>
-                        <button id="sidebar-toggle" class="flex items-center space-x-2 px-4 py-2 bg-[#1C1A27] text-gray-400 rounded-lg hover:bg-gray-900 transition-colors">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Stay On Track</span>
-                        </button>
-                        <button id="logout-btn" class="px-4 py-2 bg-[#1C1A27] text-gray-400 rounded-lg hover:bg-gray-900 transition-colors hidden">Log Out</button>
-                    </div>
-                </nav>
-            </header>
-
-            <main class="container mx-auto px-6 py-8 md:py-12">
-                <section id="dashboard" class="hidden mb-12 md:mb-16">
-                    <h2 class="text-3xl font-bold text-white mb-6">Your Progress</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="dark-card p-6 flex flex-col justify-between">
-                            <div class="flex items-center space-x-4 mb-4">
-                                <div class="bg-[#C45508]/20 p-3 rounded-full">
-                                    <i class="fas fa-book-open text-2xl text-[#C45508]"></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-400">Courses in Progress</p>
-                                </div>
-                            </div>
-                            <span id="stat-courses" class="text-7xl font-bold text-white gradient-text">0</span>
-                            <p class="mt-2 text-gray-500">Stay on top of your learning goals</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="dark-card p-4">
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-fire text-xl text-[#C45508] mr-2"></i>
-                                    <h3 class="text-lg font-semibold text-white">Learning Streak</h3>
-                                </div>
-                                <p class="text-4xl font-bold text-white"><span id="stat-streak">0</span> <span class="text-sm font-normal text-gray-500">days</span></p>
-                                <p class="text-sm text-gray-500 mt-1">Keep the momentum going!</p>
-                            </div>
-                            <div class="dark-card p-4">
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-tasks text-xl text-purple-400 mr-2"></i>
-                                    <h3 class="text-lg font-semibold text-white">Weekly Quests</h3>
-                                </div>
-                                <ul id="weekly-quests-list" class="space-y-2 text-sm text-gray-400"></ul>
-                            </div>
-                            <div class="dark-card p-4">
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-award text-xl text-purple-400 mr-2"></i>
-                                    <h3 class="text-lg font-semibold text-white">Milestones</h3>
-                                </div>
-                                <p class="text-4xl font-bold text-white"><span id="stat-milestones">0</span></p>
-                                <p class="text-sm text-gray-500 mt-1">Great job!</p>
-                            </div>
-                            <div class="dark-card p-4">
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-certificate text-xl text-[#C45508] mr-2"></i>
-                                    <h3 class="text-lg font-semibold text-white">Certificates</h3>
-                                </div>
-                                <p class="text-4xl font-bold text-white"><span id="stat-certs">0</span></p>
-                                <p class="text-sm text-gray-500 mt-1">More to come!</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <hr class="border-gray-700 my-10">
-                
-                <section id="my-courses" class="hidden mb-12 md:mb-16">
-                    <h2 class="text-3xl font-bold text-white mb-6 transition-colors duration-500">My Learning Path</h2>
-                    <div id="my-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                </section>
-
-                <section id="catalog">
-                    <h2 class="text-3xl font-bold text-white mb-2 transition-colors duration-500">Course Catalog</h2>
-                    <p class="text-gray-400 mb-6 max-w-md mx-auto transition-colors duration-500">Explore our full range of courses dedicated to sustainable development, digital literacy, and more. Use the search bar below to filter courses by title or description to find the perfect learning opportunity for you.</p>
-                    <div class="mb-6">
-                        <div class="relative">
-                            <input type="text" id="course-search" placeholder="Search for courses..." class="w-full px-4 py-3 pl-10 border border-[#4A3D65] bg-[#1C1C1E] text-white rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition">
-                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                        </div>
-                    </div>
-                    <div id="available-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-                </section>
-
-                <section id="course-content-view" class="hidden">
-                    <button id="back-to-dashboard" class="flex items-center space-x-2 px-4 py-2 mb-8 text-gray-400 hover:text-white transition-colors">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back to Dashboard</span>
-                    </button>
-                    <h1 id="course-title-content" class="text-4xl md:text-5xl font-bold text-white mb-4"></h1>
-                    <p id="course-description-content" class="text-lg text-gray-400 mb-8"></p>
-                    <div id="course-main-content" class="prose max-w-none text-gray-300"></div>
-                </section>
-            </main>
-
-            <footer class="bg-[#1C1C1E] text-gray-300 mt-16 transition-colors duration-500">
-                <div class="container mx-auto px-6 py-8">
-                    <div class="text-center">
-                        <h3 class="text-xl font-bold text-white mb-2">LoopLearn</h3>
-                        <p class="mb-4">An interactive platform for a continuous learning experience.</p>
-                        <p class="text-sm text-gray-400">&copy; 2025 LoopLearn - Quality Education LMS. All rights reserved.</p>
-                    </div>
-                </div>
-            </footer>
-            
-            <div id="overlay" class="fixed inset-0 bg-gray-900/50 z-30 transition-opacity duration-300 opacity-0 pointer-events-none hidden"></div>
-            <aside id="sidebar" class="fixed top-0 right-0 h-full w-80 bg-[#1C1A27] shadow-xl z-40 transform translate-x-full transition-transform duration-300 ease-in-out p-6 overflow-y-auto border-l border-[#4A3D65]">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-bold text-white">Upcoming Deadlines</h3>
-                    <button id="close-sidebar" class="text-gray-500 hover:text-white transition-colors">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <div id="deadlines-list" class="space-y-4"></div>
-            </aside>
-
-            <div id="looplearn-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-                <div class="modal-overlay absolute inset-0"></div>
-                <div class="bg-[#1C1A27] dark-card p-6 md:p-10 rounded-xl shadow-lg relative max-w-2xl w-full text-center">
-                    <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 gradient-text">Empowering Learners Worldwide</h2>
-                    <img src="https://placehold.co/600x400/1C1A27/E0E0E0?text=Multicultural+Learners" alt="A group of multicultural learners engaged in study" class="rounded-lg mb-6 mx-auto">
-                    <p class="text-gray-400 text-sm md:text-base mb-6 mt-4">At LoopLearn, we believe education is a universal right. Our mission is to provide accessible, quality learning resources to every corner of the globe, fostering a community of informed, global citizens.</p>
-                    <button id="explore-courses-btn" class="w-full px-6 py-3 bg-[#C45508] text-white font-semibold rounded-lg shadow-md hover:bg-orange-800 transition">Explore Courses</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal-overlay">
-        <div class="dark-card p-6 md:p-10 rounded-xl shadow-lg relative max-w-md w-full text-center">
-            <button id="close-auth-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h2 id="auth-title" class="text-3xl font-bold text-white mb-6">Sign Up</h2>
-            <form id="auth-form" class="space-y-4">
-                <input type="text" id="signup-name" placeholder="Full Name" class="w-full input-field hidden">
-                <input type="email" id="auth-email" placeholder="Email Address" class="w-full input-field" required>
-                <input type="password" id="auth-password" placeholder="Password" class="w-full input-field" required>
-                <button type="submit" id="auth-submit-btn" class="w-full py-3 font-bold bg-[#C45508] text-white rounded-lg hover:bg-orange-800 transition">Sign Up</button>
-            </form>
-            <p class="mt-4 text-gray-400">
-                <span id="auth-toggle-text">Already have an account?</span>
-                <button id="auth-toggle-btn" class="text-[#C45508] font-semibold hover:underline">Log In</button>
-            </p>
-            <p id="auth-error-message" class="mt-4 text-red-500 hidden"></p>
-        </div>
-    </div>
-    
-    <script type="module" src="js/main.js"></script>
-
+  <!-- Firebase SDKs -->
+  <script type="module" src="assets/js/firebase-config.js"></script>
+  <!-- App Logic -->
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
